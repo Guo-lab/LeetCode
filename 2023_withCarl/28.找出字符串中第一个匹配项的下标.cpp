@@ -6,10 +6,10 @@
  * https://leetcode.cn/problems/find-the-index-of-the-first-occurrence-in-a-string/description/
  *
  * algorithms
- * Medium (42.25%)
- * Likes:    1832
+ * Medium (42.23%)
+ * Likes:    1833
  * Dislikes: 0
- * Total Accepted:    829.4K
+ * Total Accepted:    829.7K
  * Total Submissions: 2M
  * Testcase Example:  '"sadbutsad"\n"sad"'
  *
@@ -46,7 +46,7 @@
  * 
  */
 
-// ----------------------- String ----------------------
+// ------------------ String  ------------------
 
 // KMP
 //  https://programmercarl.com/0028.%E5%AE%9E%E7%8E%B0strStr.html
@@ -55,8 +55,40 @@
 class Solution {
 public:
     int strStr(string haystack, string needle) {
-        // with prefix and next[]
-        
+        // KMP 
+        vector<int> next(needle.size());
+        // 前缀表初始化
+        next[0] = 0;
+        int j = 0;
+        // i 后缀末尾
+        for (int i = 1; i < needle.size(); i++) { // aabaaf
+            // 前后缀不相等的时候 回退
+            while (needle[i] != needle[j] && j > 0)
+                j = next[j - 1]; // aa -> af if match
+            // 前后缀相等的时候
+            if (needle[i] == needle[j])
+                j++;
+            next[i] = j;
+        }
+        // for (int i = 0; i < next.size(); i++)
+        //     cout << next[i] << endl;
+        // ------------------------------
+        // a a b a a b a a f
+        // a a b a a f
+        // 0 1 0 1 2 0
+        // ------------------------------
+        j = 0;
+        for (int i = 0; i < haystack.size(); i++) {
+            while (j > 0 && haystack[i] != needle[j])
+                j = next[j - 1];
+            if (haystack[i] == needle[j])
+                j++;
+            // 结束搜索的条件
+            if (j == needle.size()) // j 已经加到长度了
+                return i - j + 1;
+        }
+        // Fail
+        return -1;
     }
 };
 // @lc code=end
