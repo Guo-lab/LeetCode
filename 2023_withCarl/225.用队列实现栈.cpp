@@ -71,31 +71,37 @@
  */
 
 // ------------------------------ S & Q -----------------------------------
+// 两个队列的简化，拼一块儿
 
 // @lc code=start
 class MyStack {
 public:
     queue<int> a;
-    queue<int> b;
 
-    MyStack() {
-
-    }
+    MyStack() { }
     
     void push(int x) {
-
+        a.push(x);
     }
     
     int pop() {
-
+        int size = a.size();
+        for (int i = 0; i < size - 1; i++) {
+            int tmp = a.front();
+            a.pop();
+            a.push(tmp);
+        }
+        int ret = a.front();
+        a.pop();
+        return ret;
     }
     
     int top() {
-
+        return a.back();
     }
     
     bool empty() {
-
+        return a.empty();
     }
 };
 
@@ -109,3 +115,51 @@ public:
  */
 // @lc code=end
 
+
+
+
+class 2Q_MyStack {
+public:
+    queue<int> a;
+    queue<int> b;
+
+    MyStack() { }
+    
+    void push(int x) {
+        while (!b.empty()) {
+            int tmp = b.front();
+            a.push(tmp);
+            b.pop();
+        }
+        a.push(x);
+    }
+    
+    int pop() {
+        cout << a.size() << endl;
+        while (a.size() > 1) {
+            b.push(a.front());
+            a.pop();
+        }
+        int tmp = a.front();
+        a.pop();
+        while (!b.empty()) {
+            int tmp = b.front();
+            a.push(tmp);
+            b.pop();
+        }
+        return tmp;
+    }
+    
+    int top() {
+        while (!b.empty()) {
+            int tmp = b.front();
+            a.push(tmp);
+            b.pop();
+        }
+        return a.back();
+    }
+    
+    bool empty() {
+        return a.empty() && b.empty();
+    }
+};

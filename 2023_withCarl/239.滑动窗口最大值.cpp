@@ -65,6 +65,7 @@
 // 2. pop_back / pop_front() 要分清使用的条件
 // 3. push 都是 back
 // lü顺不容易
+// 考察了单调队列 与优先级队列不同，不光是要排序，还在 push pop 有处理
 
 // @lc code=start
 class Solution {
