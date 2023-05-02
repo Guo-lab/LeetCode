@@ -70,7 +70,7 @@
 class Solution {
 public:
     TreeNode* pre = nullptr;
-    // recursion
+    // iteration
     bool isValidBST(TreeNode* root) {
         stack<TreeNode*> s;
         if (!root) return true;

@@ -70,7 +70,7 @@ public:
     TreeNode* pre;
     int minimum = 10000000;
     
-    // recursion put root better
+    // iteration put root better
     int getMinimumDifference(TreeNode* root) {
         stack<TreeNode*> s;
         TreeNode* cur = root;

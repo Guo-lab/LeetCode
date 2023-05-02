@@ -66,7 +66,7 @@
 
 class Solution {
 public:
-    // Recursion 需要三次循环，第一次找到范围内的cur， 第二次两层while去掉不符合的左，第三次两层while去掉不符合high的右
+    // iteration 需要三次循环，第一次找到范围内的cur， 第二次两层while去掉不符合的左，第三次两层while去掉不符合high的右
     // * https://www.programmercarl.com/0669.%E4%BF%AE%E5%89%AA%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91.html#%E8%BF%AD%E4%BB%A3%E6%B3%95
     // 很有必要学习一下这样的剪枝
     

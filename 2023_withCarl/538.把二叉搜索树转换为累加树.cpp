@@ -101,4 +101,4 @@ public:
 };
 // @lc code=end
 
-既然1038题目一样，那就在那道题利用Recursion吧
+既然1038题目一样，那就在那道题利用iteration吧

@@ -66,7 +66,7 @@
 
 class Solution {
 public:
-    // recursion
+    // iteration
     TreeNode* searchBST(TreeNode* root, int val) {
         if (!root || root->val == val) return root;
         while (root) {

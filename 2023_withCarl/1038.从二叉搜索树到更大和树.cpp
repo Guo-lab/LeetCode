@@ -92,7 +92,7 @@
 
 class Solution {
 public:
-// Recursion
+// iteration
     TreeNode* pre;
     TreeNode* bstToGst(TreeNode* root) {
         if (!root) return root;

@@ -91,7 +91,7 @@
 
 class Solution {
 public:
-    // Recursion 利用 pre 记录前一个
+    // iteration 利用 pre 记录前一个
     // 单独删
     // 单独删除节点的部分 与最下面额DFS通用思路有相似之处 
 

@@ -79,8 +79,8 @@ public:
     int cnt = 0;
     int maxCnt = -100000;
 
-    // recursion better
-    vector<int> findMode(TreeNode* root) { // recursion
+    // iteration better
+    vector<int> findMode(TreeNode* root) { // iteration
         stack<TreeNode*> s;
         TreeNode* cur = root;
         while (!s.empty() || cur) {
