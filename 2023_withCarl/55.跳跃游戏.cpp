@@ -55,8 +55,28 @@
 class Solution {
 public:
     bool canJump(vector<int>& nums) {
+        int far = nums[0];
+        if (nums.size() == 1)
+            return true;
 
+        for (int i = 1; i < nums.size(); i++) {
+            if (i > far) 
+                return false;
+
+            if (i + nums[i] > far) {
+                far = i + nums[i];
+            }
+            
+            if (far >= nums.size() - 1)
+                return true;
+        }
+        return false;
     }
 };
 // @lc code=end
 
+=============
+[2,0]
+-------
+true
+=============
