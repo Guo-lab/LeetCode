@@ -50,7 +50,36 @@
 class Solution {
 public:
     bool canPartition(vector<int>& nums) {
-
+        vector<vector<int>> dp;
+        int sum = 0;
+        for (int i = 0; i < nums.size(); i++) sum += nums[i];
+        if (sum % 2) return false;
+        
+        dp.resize(nums.size(), vector<int>(sum / 2 + 1));
+        dp[0][0] = 0;
+        for (int i = 0; i < nums.size(); i++) dp[i][0] = 0;
+        for (int i = 0; i < sum / 2 + 1; i++) {
+            if (i >= nums[0]) dp[0][i] = nums[0];
+            else dp[0][i] = 0;
+        }
+        // for (int i = 0; i < dp.size(); i++) {
+        //     for (int j = 0; j < dp[0].size(); j++) {
+        //         cout << dp[i][j] << " ";
+        //     }
+        //     cout << endl;
+        // }
+        for (int i = 1; i < nums.size(); i++) {
+            for (int j = 1; j < sum / 2 + 1; j++) { 
+                if (j - nums[i] > 0) 
+                    dp[i][j] = max(dp[i - 1][j], dp[i - 1][j - nums[i]] + nums[i]);
+                else
+                    dp[i][j] = dp[i - 1][j];
+                // cout << i << " " << j << " " << dp[i][j] << endl;
+            }
+        }
+        if (dp[nums.size() - 1][sum / 2] == sum / 2)
+            return true;
+        return false;
     }
 };
 // @lc code=end
