@@ -68,6 +68,11 @@
 
 // @lc code=start
 class Solution { // 实际上求排列
+
+//! 求排列数还是 1 维数组好理解
+
+// 排列数组合数的区别对于1维dp在于 https://programmercarl.com/0518.%E9%9B%B6%E9%92%B1%E5%85%91%E6%8D%A2II.html#%E6%80%9D%E8%B7%AF
+
 public:
     int combinationSum4(vector<int>& nums, int target) {
         // =============== size_t >> long long ===============
@@ -80,7 +85,9 @@ public:
             for (int i = 1; i <= nums.size(); i++) {
                 if (j >= nums[i - 1])
                     dp[j] += dp[j - nums[i - 1]]; 
+                cout << dp[j] << " ";
             }
+            cout << endl;
         }
         // for (int j = 0; j <= target; j++) {
         //         cout << dp[j] << " ";
@@ -88,8 +95,50 @@ public:
         int ans = dp[target];
         return ans;
     }
+
+    int _combinationSum4(vector<int>& nums, int target) {
+        // =============== size_t >> long long ===============
+        vector<vector<size_t>> dp(nums.size() + 1, vector<size_t>(target + 1));
+        for (int i = 0; i <= nums.size(); i++)
+            dp[i][0] = 1;
+        // for (int j = 0; j <= target; j++)
+        //     dp[0][j] = 1;
+        
+
+        for (int j = 1; j <= target; j++) {
+            for (int i = 1; i <= nums.size(); i++) {
+                if (j >= nums[i - 1]) {
+                    dp[i][j] = dp[i - 1][j] + dp[i][j - nums[i - 1]]; 
+                } else
+                    dp[i][j] = dp[i - 1][j];
+                
+                // 这样像下面写相当于还是得更新前面的每一个位置，因此更需要外层来循环背包了
+                int tmp = i;
+                while (tmp >= 2) {
+                    dp[tmp - 1][j] = dp[tmp][j];
+                    tmp--;
+                }
+            }
+        }
+        
+        for (int j = 0; j <= nums.size(); j++) {
+            for (int i = 0; i <= target; i++)
+                cout << dp[j][i] << " ";
+            cout << endl;
+        }
+        int ans = dp[nums.size()][target];
+        return ans;
+    }
 };
 // @lc code=end
+
+
+
+
+
+
+
+
 ===================
 [10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,210,220,230,240,250,260,270,280,290,300,310,320,330,340,350,360,370,380,390,400,410,420,430,440,450,460,470,480,490,500,510,520,530,540,550,560,570,580,590,600,610,620,630,640,650,660,670,680,690,700,710,720,730,740,750,760,770,780,790,800,810,820,830,840,850,860,870,880,890,900,910,920,930,940,950,960,970,980,990,111]
 999
@@ -99,15 +148,19 @@ public:
 
 
 
+
+
+
+
 =============================
 [1,2,3]
 4
 -------------------
-    1   2   3   4
-1   0   0   0   0
-1   1   1   1   1
-1   1   2   2   3
-1   1   2   3   4 (4种组合)
+    1   2   3   4                排列
+1   0   0   0   0                1  0  0  0  0  
+1   1   1   1   1                1  1  1  2  4(0 加上第三列上一状态的nums[i - 1])
+1   1   2   2   3                1  1  2  3  6(4 加上第三列上一状态的NUMS[2])
+1   1   2   3   4 (4种组合)是吧   1  1  2  4  7(6 加上第三列上衣状态的nums[1])
 -------------------
 7
 =============================
