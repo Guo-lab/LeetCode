@@ -71,7 +71,7 @@ price[x] - price[x - 1] + price[x - 1] - price[x - 2] + ... - price[0]
 // @lc code=start
 class Solution {
 public:
-    int maxProfit(vector<int>& prices) {
+    int Greedy_maxProfit(vector<int>& prices) { // 2023.5.14 贪心还是把每一天的收益分开考虑了
         vector<int> profit(prices.size() - 1);
         int ans;
         for (int i = 1; i < prices.size(); i++) {
@@ -81,8 +81,25 @@ public:
         }
         return ans;
     }
+// ------------------------------------------------------------------ // 2023.5.14
+// ------------------------ Dynamic Programming ---------------------
+// Trade
+// ------------------------------------------------------------------    
+    int maxProfit(vector<int>& prices) {
+        vector<vector<int>> dp(2, vector<int>(prices.size()));
+        dp[0][0] = 0;              // 不持有 
+        dp[1][0] = 0 - prices[0];  // 持有
+        for (int i = 1; i < prices.size(); i++) {
+            dp[0][i] = max(dp[0][i - 1], dp[1][i - 1] + prices[i]);
+            dp[1][i] = max(dp[1][i - 1], dp[0][i - 1] - prices[i]); 
+        }
+        return max(dp[0][prices.size() - 1], dp[1][prices.size() - 1]);
+    }
 };
 // @lc code=end
+
+
+
 
 ========================
 [7,1,5,3,6,4]

@@ -55,12 +55,14 @@
  */
 
 // -------------------------- Greedy -----------------------
+
 // ------------------- Dynamic programming -----------------
+// Trade
 
 // @lc code=start
 class Solution {
 public:
-    int maxProfit(vector<int>& prices, int fee) {
+    int Greedy_maxProfit(vector<int>& prices, int fee) {
         // Greedy 买入时计算
         int p = 0;
         int afford = prices[0] + fee;
@@ -68,16 +70,47 @@ public:
         for (int i = 1; i < prices.size(); i++) {
             if (prices[i] + fee < afford)
                 afford = prices[i] + fee; // can be purchased with a lower price
+                // afford 没有在这里被更新，意味着后面的 else 里面还是同一笔交易
             else {
+                // 卖出时能够补全之前的付出
                 p += (prices[i] - afford > 0) ?  prices[i] - afford : 0;
                 //* 贪心这里，开始的时候理解有些困难
                 // 这里之所以 afford =? prices[i] 是因为想预留反悔操作，即在这一天并没有发生交易
                 // 卖出一支股票时，就立即获得以相同价格且免除手续费买入下一支股票的权利
+                
+                // 如果买入了，下一次卖出时就一定能
+                // 有着更有吸引力的价格
                 afford = (prices[i] - afford > 0) ? prices[i] : afford;
             } 
         }
         return p;
     }
+
+// ------------------- Dynamic programming -----------------
+// Trade
+    int maxProfit(vector<int>& prices, int fee) {
+        vector<vector<int>> dp(2, vector<int>(prices.size()));
+        dp[0][0] = 0;
+        dp[1][0] = -prices[0] - fee;  
+        for (int i = 1; i < prices.size(); i++) {
+            dp[0][i] = max(dp[0][i - 1], dp[1][i - 1] + prices[i]);
+            dp[1][i] = max(dp[1][i - 1], dp[0][i - 1] - prices[i] - fee);
+            // cout << dp[0][i] << " " << dp[1][i] << endl;
+        }
+        return max(dp[0][prices.size() - 1], dp[1][prices.size() - 1]);
+    }
+
 };
 // @lc code=end
 
+Accepted
+44/44 cases passed (484 ms)
+Your runtime beats 5.57 % of cpp submissions
+Your memory usage beats 59.96 % of cpp submissions (60.6 MB)
+
+DO NOT PRINT
+
+Accepted
+44/44 cases passed (92 ms)
+Your runtime beats 71.15 % of cpp submissions
+Your memory usage beats 60.09 % of cpp submissions (60.6 MB)
