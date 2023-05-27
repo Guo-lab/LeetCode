@@ -1,0 +1,102 @@
+/*
+ * @lc app=leetcode.cn id=53 lang=cpp
+ *
+ * [53] 最大子数组和
+ *
+ * https://leetcode.cn/problems/maximum-subarray/description/
+ *
+ * algorithms
+ * Medium (54.75%)
+ * Likes:    6035
+ * Dislikes: 0
+ * Total Accepted:    1.4M
+ * Total Submissions: 2.5M
+ * Testcase Example:  '[-2,1,-3,4,-1,2,1,-5,4]'
+ *
+ * 给你一个整数数组 nums ，请你找出一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。
+ * 
+ * 子数组 是数组中的一个连续部分。
+ * 
+ * 
+ * 
+ * 示例 1：
+ * 
+ * 
+ * 输入：nums = [-2,1,-3,4,-1,2,1,-5,4]
+ * 输出：6
+ * 解释：连续子数组 [4,-1,2,1] 的和最大，为 6 。
+ * 
+ * 
+ * 示例 2：
+ * 
+ * 
+ * 输入：nums = [1]
+ * 输出：1
+ * 
+ * 
+ * 示例 3：
+ * 
+ * 
+ * 输入：nums = [5,4,-1,7,8]
+ * 输出：23
+ * 
+ * 
+ * 
+ * 
+ * 提示：
+ * 
+ * 
+ * 1 <= nums.length <= 10^5
+ * -10^4 <= nums[i] <= 10^4
+ * 
+ * 
+ * 
+ * 
+ * 进阶：如果你已经实现复杂度为 O(n) 的解法，尝试使用更为精妙的 分治法 求解。
+ * 
+ */
+
+// ------------------------------ Greedy --------------------------------
+连续和为负数，立刻放弃
+
+
+// ------------------ Dynamic Programming ------------------------
+
+
+// @lc code=start
+class Solution {
+public:
+    int Greedy_maxSubArray(vector<int>& nums) {
+        int max = -10000000;
+        int sum = 0;
+        for (int i = 0; i < nums.size(); i++) {
+            sum += nums[i];
+            max = max < sum ? sum : max; // 先更新 max， 再复原累加器
+            // 即使有INT_MIN或者全是负数也没有关系，因为累加器会更新
+            if (sum < 0)
+                sum = 0;
+        }
+        return max;
+    }
+    int maxSubArray(vector<int>& nums) { // Dynamic Programming
+        int max = -10000000;
+        int sum = 0;
+        vector<int> dp(nums.size());
+        dp[0] = nums[0];
+        max = dp[0];
+
+        for (int i = 1; i < nums.size(); i++) {
+            // 要是有一个前缀和还不如这个位置的元素大，就刷新
+            dp[i] = dp[i - 1] + nums[i] < nums[i] ? nums[i] : dp[i - 1] + nums[i];
+            max = max > dp[i] ? max : dp[i];
+        }
+        return max;
+    }
+};
+// @lc code=end
+
+==========
+[-1]
+----
+-1
+==========

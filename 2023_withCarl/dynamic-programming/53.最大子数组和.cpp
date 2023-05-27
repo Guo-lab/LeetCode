@@ -59,10 +59,14 @@
 // ------------------------------ Greedy --------------------------------
 连续和为负数，立刻放弃
 
+
+// ------------------ Dynamic Programming ------------------------
+
+
 // @lc code=start
 class Solution {
 public:
-    int maxSubArray(vector<int>& nums) {
+    int Greedy_maxSubArray(vector<int>& nums) {
         int max = -10000000;
         int sum = 0;
         for (int i = 0; i < nums.size(); i++) {
@@ -71,6 +75,20 @@ public:
             // 即使有INT_MIN或者全是负数也没有关系，因为累加器会更新
             if (sum < 0)
                 sum = 0;
+        }
+        return max;
+    }
+    int maxSubArray(vector<int>& nums) { // Dynamic Programming
+        int max = -10000000;
+        int sum = 0;
+        vector<int> dp(nums.size());
+        dp[0] = nums[0];
+        max = dp[0];
+
+        for (int i = 1; i < nums.size(); i++) {
+            // 要是有一个前缀和还不如这个位置的元素大，就刷新
+            dp[i] = dp[i - 1] + nums[i] < nums[i] ? nums[i] : dp[i - 1] + nums[i];
+            max = max > dp[i] ? max : dp[i];
         }
         return max;
     }
