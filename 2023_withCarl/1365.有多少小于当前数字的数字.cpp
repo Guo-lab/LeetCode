@@ -57,6 +57,8 @@
  */
 
 // -------------------- O(n^2) Optimization -----------------
+//
+// sort(vec.begin(), vec.end()) + 后向前遍历 简化到 O(nlogn)
 
 // @lc code=start
 class Solution {
