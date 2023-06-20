@@ -77,16 +77,57 @@ public:
         father[v] = u;
     }
     // ===========================================
-    vector<int> findRedundantDirectedConnection(vector<vector<int>>& edges) {
+
+    bool isTreeAfterRemoveEdge(vector<vector<int>>& edges, int deletedEdge) {
         init();
-        // for (int i = 0; i < edges.size(); i++) {
-        //     if (isSame(edges[i][0], edges[i][1]) || isSame(edges[i][1], edges[i][0]))
-        //         return edges[i];
-        //     else
-        //         join(edges[i][0], edges[i][1]);
-        // }
+        for (int i = 0; i < edges.size(); i++) {
+            if (i == deletedEdge) 
+                continue;
+            if (isSame(edges[i][0], edges[i][1])) // 构成有向环了，一定不是树
+                return false;
+            else
+                join(edges[i][0], edges[i][1]);
+        }
+        return true;
+    }
+    vector<int> findRedundantDirectedConnection(vector<vector<int>>& edges) { // 图保证了连通
+        vector<int> e;
+        vector<int> indegree(1005);
+        for (int i = edges.size() - 1; i >= 0; i--) {
+            indegree[edges[i][1]]++;
+        }
+        for (int i = edges.size() - 1; i >= 0; i--) { // 成对出现的入度为2
+            if (indegree[edges[i][1]] > 1)
+                e.push_back(i);
+        }
+        if (e.size() > 0) {
+            if (isTreeAfterRemoveEdge(edges, e[0]))
+                return edges[e[0]];
+            else
+                return edges[e[1]];
+        }
+
+        // ----------- 没有入度为 2 的节点，一定有向环 -----------
+        init();
+        for (int i = 0; i < edges.size(); i++) {
+            if (isSame(edges[i][0], edges[i][1])) // ---- 根同
+                return edges[i];
+            else
+                join(edges[i][0], edges[i][1]);
+        }
         return {};
     }
 };
 // @lc code=end
 
+
+============================ 成环的情况 有入度为 2 的节点
+[[2,1],[3,1],[4,2],[1,4]]
+-------------------------
+[2,1]
+============================
+
+* 2 -> 1
+3 -> 1
+* 4 -> 2
+* 1 -> 4
